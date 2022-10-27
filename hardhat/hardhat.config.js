@@ -4,6 +4,8 @@ require("dotenv").config();
 
 const ALCHEMY_API_KEY_URL = process.env.ALCHEMY_API_KEY_URL;
 
+const QUICKNODE_HTTP_URL = process.env.QUICKNODE_HTTP_URL;
+
 const PRIVATE_KEY = process.env.PRIVATE_KEY
 
 
@@ -12,7 +14,7 @@ module.exports = {
 
 networks:{
   goerli: {
-    url: ALCHEMY_API_KEY_URL,
+    url: QUICKNODE_HTTP_URL,
     accounts: [PRIVATE_KEY],
   },
 } 

@@ -1,19 +1,24 @@
-
-
-const {ethers} = require("hardhat");
+const { ethers } = require("hardhat");
+require("dotenv").config({ path: ".env" });
+const { WHITELIST_CONTRACT_ADDRESS, METADATA_URL } = require("../constants");
 
 async function main() {
 
-    //find the contract to be deployed
-    const contract = await ethers.getContractFactory("CryptoDevs");
-    
-    //deploy contract
-    const deployedContract = await contract.deploy();
+  const whitelistContract = WHITELIST_CONTRACT_ADDRESS;
 
-    //wait for deployment to finish
-    await deployedContract.deployed();
+  const metadataURL = METADATA_URL;
+  
+  const cryptoDevsContract = await ethers.getContractFactory("CryptoDevs");
 
-    console.log("contract is deployed to", deployedContract.address);
+  const deployedCryptoDevsContract = await cryptoDevsContract.deploy(
+    metadataURL,
+    whitelistContract
+  );
+
+  console.log(
+    "Crypto Devs Contract Address:",
+    deployedCryptoDevsContract.address
+  );
 }
 
 main()
