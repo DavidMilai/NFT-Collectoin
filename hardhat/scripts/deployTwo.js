@@ -1,24 +1,24 @@
 
 
-// const {ethers} = require("hardhat");
+const {ethers} = require("hardhat");
 
-// async function main() {
+async function main() {
 
-//     //find the contract to be deployed
-//     const contract = await ethers.getContractFactory("NFT");
+    //find the contract to be deployed
+    const contract = await ethers.getContractFactory("CryptoDevs");
     
-//     //deploy contract
-//     const deployedContract = await contract.deploy();
+    //deploy contract
+    const deployedContract = await contract.deploy();
 
-//     //wait for deployment to finish
-//     await deployedContract.deployed();
+    //wait for deployment to finish
+    await deployedContract.deployed();
 
-//     console.log("contract is deployed to", deployedContract.address);
-// }
+    console.log("contract is deployed to", deployedContract.address);
+}
 
-// main()
-//   .then(() => process.exit(0))
-//   .catch((error) => {
-//     console.error(error);
-//     process.exit(1);
-//   });
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
