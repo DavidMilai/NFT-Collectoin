@@ -23,7 +23,7 @@ export default function Home() {
       signer
     );
  
-    const owner = await nftContract.owner;
+    const owner = await nftContract.owner();
 
     console.log("Owner is ",owner);
 
