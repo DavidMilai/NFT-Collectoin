@@ -49,8 +49,8 @@ export default function Home() {
     }
   };
 
-  const checkIfPresaleEnded = async ()=>{
-    try{
+  const checkIfPresaleEnded = async () => {
+    try {
       const provider = await getProviderOrSigner();
 
       const nftContract = new Contract(
@@ -61,18 +61,17 @@ export default function Home() {
 
       const presaleEndTime = await nftContract.presaleEnded();
 
-      const currentTimeInSeconds = Date.now()/1000;
+      const currentTimeInSeconds = Date.now() / 1000;
 
-      const hasPresaleEnded = presaleEndTime.lt(Math.floor(currentTimeInSeconds));
+      const hasPresaleEnded = presaleEndTime.lt(
+        Math.floor(currentTimeInSeconds)
+      );
 
       setPresaleEnded(hasPresaleEnded);
-
-
-    }
-    catch(err){
+    } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   const checkIfPresaleStarted = async () => {
     try {
@@ -87,8 +86,11 @@ export default function Home() {
       const isPresaleStarted = await nftContract.presaleStarted();
 
       setPresaleStarted(isPresaleStarted);
+
+      return isPresaleStarted;
     } catch (err) {
       console.log(err);
+      return false;
     }
   };
 
@@ -119,6 +121,16 @@ export default function Home() {
     }
   };
 
+  const onPageLoad = async () => {
+    await connectWallet();
+    await getOwner();
+    const presaleStarted = await checkIfPresaleStarted();
+
+    if (presaleStarted) {
+      await checkIfPresaleEnded();
+    }
+  };
+
   useEffect(() => {
     if (!walletConnected) {
       web3ModalRef.current = new Web3Modal({
@@ -126,11 +138,21 @@ export default function Home() {
         providerOptions: {},
         disableInjectedProvider: false,
       });
-
-      connectWallet();
-      checkIfPresaleStarted();
+      onPageLoad();
     }
   }, []);
+
+  function renderBody(){
+    if(!walletConnected){
+      <button onClick={connectWallet} className={styles.button}>
+      connect Wallet{" "}
+    </button>
+    }
+    if(isOwner && !presaleStarted){}
+  }
+  if(!presaleStarted){}
+
+  if(presaleEnded && !presaleEnded)
 
   return (
     <div>
@@ -139,11 +161,7 @@ export default function Home() {
       </Head>
 
       <div className={styles.main}>
-        {!walletConnected ? (
-          <button onClick={connectWallet} className={styles.button}>
-            connect Wallet{" "}
-          </button>
-        ) : null}
+       
       </div>
     </div>
   );
