@@ -50,7 +50,25 @@ export default function Home() {
   };
 
   const checkIfPresaleEnded = async ()=>{
-    try{}
+    try{
+      const provider = await getProviderOrSigner();
+
+      const nftContract = new Contract(
+        NFT_CONTRACT_ADDRESS,
+        NFT_CONTRACT_APBI,
+        provider
+      );
+
+      const presaleEndTime = await nftContract.presaleEnded();
+
+      const currentTimeInSeconds = Date.now()/1000;
+
+      const hasPresaleEnded = presaleEndTime.lt(Math.floor(currentTimeInSeconds));
+
+      setPresaleEnded(hasPresaleEnded);
+
+
+    }
     catch(err){
       console.log(err);
     }
