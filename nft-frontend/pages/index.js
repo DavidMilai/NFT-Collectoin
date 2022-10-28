@@ -16,14 +16,13 @@ export default function Home() {
   const getOwner = async () => {
  try{
      const signer = await getProviderOrSigner(true);
-     const provider = await getProviderOrSigner();
 
     const nftContract = new Contract(
       NFT_CONTRACT_ADDRESS,
       abi,
       signer
     );
-
+ 
     const owner = await nftContract.owner;
 
     console.log("Owner is ",owner);
@@ -33,7 +32,7 @@ export default function Home() {
     console.log("address is ",userAddress);
 
 
-    if (owner.toLowerCase() === userAddress.toLowerCase()) {
+    if (owner.toString().toLowerCase() === userAddress.toLowerCase()) {
       setIsOwner(true);
     }
  }catch(err){
