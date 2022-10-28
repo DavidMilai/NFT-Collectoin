@@ -3,7 +3,7 @@ import { providers, Contract } from "ethers";
 import { useEffect, useRef, useState } from "react";
 import Web3Modal from "web3modal";
 import styles from "../styles/Home.module.css";
-import { NFT_CONTRACT_ADDRESS, NFT_CONTRACT_APBI } from "../constants";
+import { NFT_CONTRACT_ADDRESS, abi } from "../constants";
 
 export default function Home() {
   const [walletConnected, setWalletConnected] = useState(false);
@@ -14,21 +14,31 @@ export default function Home() {
   const web3ModalRef = useRef();
 
   const getOwner = async () => {
-    const signer = await getProviderOrSigner(true);
+ try{
+     const signer = await getProviderOrSigner(true);
+     const provider = await getProviderOrSigner();
 
     const nftContract = new Contract(
       NFT_CONTRACT_ADDRESS,
-      NFT_CONTRACT_APBI,
+      abi,
       signer
     );
 
-    const owner = nftContract.owner();
+    const owner = await nftContract.owner;
 
-    const userAddress = signer.getAddress();
+    console.log("Owner is ",owner);
+
+    const userAddress = await signer.getAddress();
+
+    console.log("address is ",userAddress);
+
 
     if (owner.toLowerCase() === userAddress.toLowerCase()) {
       setIsOwner(true);
     }
+ }catch(err){
+  console.log(err.message);
+ }
   };
 
   const startPresale = async () => {
@@ -36,7 +46,7 @@ export default function Home() {
       const signer = await getProviderOrSigner(true);
       const nftContract = new Contract(
         NFT_CONTRACT_ADDRESS,
-        NFT_CONTRACT_APBI,
+        abi,
         signer
       );
 
@@ -55,7 +65,7 @@ export default function Home() {
 
       const nftContract = new Contract(
         NFT_CONTRACT_ADDRESS,
-        NFT_CONTRACT_APBI,
+        abi,
         provider
       );
 
@@ -79,7 +89,7 @@ export default function Home() {
 
       const nftContract = new Contract(
         NFT_CONTRACT_ADDRESS,
-        NFT_CONTRACT_APBI,
+        abi,
         provider
       );
 
@@ -142,17 +152,30 @@ export default function Home() {
     }
   }, []);
 
-  function renderBody(){
-    if(!walletConnected){
-      <button onClick={connectWallet} className={styles.button}>
-      connect Wallet{" "}
-    </button>
+  function renderBody() {
+    if (!walletConnected) {
+      return (
+        <button onClick={connectWallet} className={styles.button}>
+          connect Wallet
+        </button>
+      );
     }
-    if(isOwner && !presaleStarted){}
+    if (isOwner && !presaleStarted) {
+      return (
+        <button onClick={startPresale} className={styles.button}>
+          Start Presale
+        </button>
+      );
+    }
   }
-  if(!presaleStarted){}
+  if (!presaleStarted) {
+  }
 
-  if(presaleEnded && !presaleEnded)
+  if (presaleEnded && !presaleEnded) {
+  }
+
+  if (presaleEnded) {
+  }
 
   return (
     <div>
@@ -160,9 +183,7 @@ export default function Home() {
         <title>Crypto Devs NFT</title>
       </Head>
 
-      <div className={styles.main}>
-       
-      </div>
+      <div className={styles.main}>{renderBody()}</div>
     </div>
   );
 }
