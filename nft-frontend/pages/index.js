@@ -13,7 +13,7 @@ export default function Home() {
 
   const web3ModalRef = useRef();
 
-  const getOwner = async () => {
+  const getOwner = async () => { 
  try{
      const signer = await getProviderOrSigner(true);
 
