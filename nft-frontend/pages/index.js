@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { providers, Contract } from "ethers";
+import { providers, Contract, utils } from "ethers";
 import { useEffect, useRef, useState } from "react";
 import Web3Modal from "web3modal";
 import styles from "../styles/Home.module.css";
@@ -134,6 +134,23 @@ export default function Home() {
     }
   }, []);
 
+
+  preSaleMint() = async()=>{
+    try {
+      const signer = await getProviderOrSigner(true);
+
+      const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, signer);
+
+      const txn = await nftContract.preSaleMint({
+        value:utils.parseEther("0.01")
+      });
+      await txn.wait();
+      window.alert("You successfully minted a cryptodev!");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   function renderBody() {
     if (!walletConnected) {
       return (
@@ -152,16 +169,44 @@ export default function Home() {
   }
   if (!presaleStarted) {
     return (
-      <button className={styles.description}>
-        Presale hasn't started come back later
-      </button>
-    );  
+      <center>
+        <div>
+          <span className={styles.description}>
+            Presale hasn't started come back later
+          </span>
+        </div>
+      </center>
+    );
   }
 
   if (presaleEnded && !presaleEnded) {
+    return (
+      <div>
+        <span className={styles.description}>
+          Presale has started if your address has started, you can mint a
+          cryptodev
+        </span>
+        <button onClick={preSaleMint} className={styles.button}>
+          Presale Mint
+        </button>
+      </div>
+    );
   }
 
   if (presaleEnded) {
+    return (
+      <div>
+        <span className={styles.description}>
+          Presale has ended,
+           you can mint a Cryptodev in public sale, if any remain
+        </span>
+        <button onClick={preSaleMint} className={styles.button}>
+          Public Mint
+        </button>
+      </div>
+    );
+
+
   }
 
   return (
