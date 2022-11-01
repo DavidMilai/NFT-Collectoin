@@ -33,3 +33,5 @@ main()
   });
  
   // 0xbF8219d0736c9BC34DeAaF8f3aE72C0f7EaF06fd
+
+  // quicknode address 0x92eab1e234dee6f2E3Cf4d1B0E3215E2Ebf2C144
