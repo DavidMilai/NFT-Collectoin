@@ -151,6 +151,11 @@ export default function Home() {
     }
   }
   if (!presaleStarted) {
+    return (
+      <button className={styles.description}>
+        Presale hasn't started come back later
+      </button>
+    );  
   }
 
   if (presaleEnded && !presaleEnded) {
