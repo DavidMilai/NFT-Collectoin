@@ -13,41 +13,32 @@ export default function Home() {
 
   const web3ModalRef = useRef();
 
-  const getOwner = async () => { 
- try{
-     const signer = await getProviderOrSigner(true);
+  const getOwner = async () => {
+    try {
+      const signer = await getProviderOrSigner(true);
 
-    const nftContract = new Contract(
-      NFT_CONTRACT_ADDRESS,
-      abi,
-      signer
-    );
- 
-    const owner = await nftContract.owner();
+      const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, signer);
 
-    console.log("Owner is ",owner);
+      const owner = await nftContract.owner();
 
-    const userAddress = await signer.getAddress();
+      console.log("Owner is ", owner);
 
-    console.log("address is ",userAddress);
+      const userAddress = await signer.getAddress();
 
+      console.log("address is ", userAddress);
 
-    if (owner.toString().toLowerCase() === userAddress.toLowerCase()) {
-      setIsOwner(true);
+      if (owner.toString().toLowerCase() === userAddress.toLowerCase()) {
+        setIsOwner(true);
+      }
+    } catch (err) {
+      console.log(err.message);
     }
- }catch(err){
-  console.log(err.message);
- }
   };
 
   const startPresale = async () => {
     try {
       const signer = await getProviderOrSigner(true);
-      const nftContract = new Contract(
-        NFT_CONTRACT_ADDRESS,
-        abi,
-        signer
-      );
+      const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, signer);
 
       const txn = await nftContract.startPresale();
       await txn.wait();
@@ -62,11 +53,7 @@ export default function Home() {
     try {
       const provider = await getProviderOrSigner();
 
-      const nftContract = new Contract(
-        NFT_CONTRACT_ADDRESS,
-        abi,
-        provider
-      );
+      const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, provider);
 
       const presaleEndTime = await nftContract.presaleEnded();
 
@@ -86,11 +73,7 @@ export default function Home() {
     try {
       const provider = await getProviderOrSigner();
 
-      const nftContract = new Contract(
-        NFT_CONTRACT_ADDRESS,
-        abi,
-        provider
-      );
+      const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, provider);
 
       const isPresaleStarted = await nftContract.presaleStarted();
 
