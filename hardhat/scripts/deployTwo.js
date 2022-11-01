@@ -1,6 +1,8 @@
 const { ethers } = require("hardhat");
 require("dotenv").config({ path: ".env" });
-const { WHITELIST_CONTRACT_ADDRESS, METADATA_URL } = require("../constants");
+const { WHITELIST_CONTRACT_ADDRESS, METADATA_URL } = require("../constants"); 
+
+
 
 async function main() {
 
@@ -9,6 +11,7 @@ async function main() {
   const metadataURL = METADATA_URL;
   
   const cryptoDevsContract = await ethers.getContractFactory("CryptoDevs");
+
 
   const deployedCryptoDevsContract = await cryptoDevsContract.deploy(
     metadataURL,
@@ -19,6 +22,7 @@ async function main() {
     "Crypto Devs Contract Address:",
     deployedCryptoDevsContract.address
   );
+
 }
 
 main()
@@ -29,3 +33,6 @@ main()
   });
 
   // 0x9F35aCB7194156da5c564184B3D7a19b16e0e934
+
+
+  // Latest contract address is 0xbF8219d0736c9BC34DeAaF8f3aE72C0f7EaF06fd

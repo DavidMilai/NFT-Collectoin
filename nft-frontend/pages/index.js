@@ -27,7 +27,7 @@ export default function Home() {
 
       console.log("address is ", userAddress);
 
-      if (owner.toString().toLowerCase() === userAddress.toLowerCase()) {
+      if (owner.toLowerCase() === userAddress.toLowerCase()) {
         setIsOwner(true);
       }
     } catch (err) {
