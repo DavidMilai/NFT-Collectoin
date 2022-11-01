@@ -31,8 +31,5 @@ main()
     console.error(error);
     process.exit(1);
   });
-
-  // 0x9F35aCB7194156da5c564184B3D7a19b16e0e934
-
-
-  // Latest contract address is 0xbF8219d0736c9BC34DeAaF8f3aE72C0f7EaF06fd
+ 
+  // 0xbF8219d0736c9BC34DeAaF8f3aE72C0f7EaF06fd

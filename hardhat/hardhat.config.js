@@ -13,9 +13,8 @@ module.exports = {
 
 networks:{
   goerli: {
-    url: ALCHEMY_API_KEY_URL,
+    url: QUICKNODE_HTTP_URL,
     accounts: [PRIVATE_KEY],
   },
 } 
-
 };
