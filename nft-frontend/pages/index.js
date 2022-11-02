@@ -52,6 +52,7 @@ export default function Home() {
   };
 
   const startPresale = async () => {
+    setLoading(true);
     try {
       const signer = await getProviderOrSigner(true);
       const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, signer);
@@ -63,6 +64,7 @@ export default function Home() {
     } catch (err) {
       console.log(err);
     }
+    setLoading(false);
   };
 
   const checkIfPresaleEnded = async () => {
@@ -163,6 +165,7 @@ export default function Home() {
   }, []);
 
   const preSaleMint = async () => {
+    setLoading(true);
     try {
       const signer = await getProviderOrSigner(true);
 
@@ -176,22 +179,26 @@ export default function Home() {
     } catch (error) {
       console.log(error);
     }
+    setLoading(false );
   };
 
   const publicMint = async () => {
+    setLoading(true);
     try {
       const signer = await getProviderOrSigner(true);
 
       const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, signer);
 
       const txn = await nftContract.mint({
-        value: utils.parseEther("0.01"),
+        value: utils.parseEther("0.01"), 
       });
       await txn.wait();
       window.alert("You successfully minted a cryptodev!");
     } catch (error) {
       console.log(error);
     }
+    setLoading(false);
+
   };
 
   function renderBody() {
@@ -242,10 +249,9 @@ export default function Home() {
     if (presaleEnded) {
       return (
         <div>
-          <span className={styles.description}>
-            Presale has ended, you can mint a Cryptodev in public sale, if any
-            remain
-          </span>
+          <div className={styles.description}>
+            Presale has ended, you can mint a Cryptodev in public sale, if any remain
+          </div>
           <button onClick={publicMint} className={styles.button}>
             Public Mint
           </button>
@@ -263,12 +269,12 @@ export default function Home() {
       <div className={styles.main}>
         <div>
           <h1 className={styles.title}>Welcome to CryptoDevs NFT</h1>
-          <span className={styles.description}>
+          <div className={styles.description}>
             This is a collection for devs in WEB3
-          </span>
-          <span className={styles.description}>
+          </div>
+          <div className={styles.description}>
             {numTokensMinted}/20 have been minted already
-          </span>
+          </div>
           {renderBody()}
         </div>
         <img className={styles.image} src="/cryptodevs/0.svg" />
