@@ -9,10 +9,25 @@ export default function Home() {
   const [walletConnected, setWalletConnected] = useState(false);
   const [presaleStarted, setPresaleStarted] = useState(false);
   const [presaleEnded, setPresaleEnded] = useState(false);
+  const [numTokensMinted, setNumTokenMinted] = useState("");
   const [isOwner, setIsOwner] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const web3ModalRef = useRef();
+
+  const getNumMintedTokens = async ()=>{
+  try {
+    const provider = await getProviderOrSigner()
+
+    const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, provider);
+
+    const numTokenIDs = await nftContract.tokenIds();
+
+    setNumTokenMinted(numTokenIDs.toString());
+
+  } catch (error) {
+    console.log(error)
+  }}
 
   const getOwner = async () => {
     try {
@@ -122,6 +137,7 @@ export default function Home() {
     if (presaleStarted) {
       await checkIfPresaleEnded();
     }
+    await getNumMintedTokens();
   };
 
   useEffect(() => {
