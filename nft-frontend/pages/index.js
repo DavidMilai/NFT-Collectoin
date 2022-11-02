@@ -176,10 +176,8 @@ export default function Home() {
       );
     }
 
-    if(loading){
-      return (
-        <span className={styles.description}>Loading...</span>
-      );
+    if (loading) {
+      return <span className={styles.description}>Loading...</span>;
     }
 
     if (isOwner && !presaleStarted) {
@@ -189,16 +187,14 @@ export default function Home() {
         </button>
       );
     }
-  }
+
   if (!presaleStarted) {
     return (
-      <center>
-        <div>
+         <div>
           <span className={styles.description}>
             Presale hasn't started come back later
           </span>
-        </div>
-      </center>
+        </div> 
     );
   }
 
@@ -229,6 +225,7 @@ export default function Home() {
       </div>
     );
   }
+}
 
   return (
     <div>
@@ -236,7 +233,17 @@ export default function Home() {
         <title>Crypto Devs NFT</title>
       </Head>
 
-      <div className={styles.main}>{renderBody()}</div>
+      <div className={styles.main}>
+        <div>
+          <h1 className={styles.title}>Welcome to CryptoDevs NFT</h1>
+          <span className={styles.description}>
+            This is a collection for devs in WEB3
+          </span>
+          {renderBody()}
+        </div>
+        <img className={styles.image} src="/cryptodevs/0.svg" />
+      </div>
+      <footer className={styles.footer}>Made with &#10084; by SuperM</footer>
     </div>
   );
 }
