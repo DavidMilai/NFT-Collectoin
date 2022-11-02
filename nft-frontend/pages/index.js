@@ -15,19 +15,19 @@ export default function Home() {
 
   const web3ModalRef = useRef();
 
-  const getNumMintedTokens = async ()=>{
-  try {
-    const provider = await getProviderOrSigner()
+  const getNumMintedTokens = async () => {
+    try {
+      const provider = await getProviderOrSigner();
 
-    const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, provider);
+      const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, provider);
 
-    const numTokenIDs = await nftContract.tokenIds();
+      const numTokenIDs = await nftContract.tokenIds();
 
-    setNumTokenMinted(numTokenIDs.toString());
-
-  } catch (error) {
-    console.log(error)
-  }}
+      setNumTokenMinted(numTokenIDs.toString());
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getOwner = async () => {
     try {
@@ -138,6 +138,17 @@ export default function Home() {
       await checkIfPresaleEnded();
     }
     await getNumMintedTokens();
+
+    setInterval(async () => {
+      await getNumMintedTokens();
+    }, 5 * 1000);
+
+    setInterval(async () => {
+      await checkIfPresaleStarted();
+      if (presaleStarted) {
+        await checkIfPresaleEnded();
+      }
+    }, 5 * 1000);
   };
 
   useEffect(() => {
@@ -204,44 +215,44 @@ export default function Home() {
       );
     }
 
-  if (!presaleStarted) {
-    return (
-         <div>
+    if (!presaleStarted) {
+      return (
+        <div>
           <span className={styles.description}>
             Presale hasn't started come back later
           </span>
-        </div> 
-    );
-  }
+        </div>
+      );
+    }
 
-  if (presaleEnded && !presaleEnded) {
-    return (
-      <div>
-        <span className={styles.description}>
-          Presale has started! if your address has started, you can mint a
-          cryptodev
-        </span>
-        <button onClick={preSaleMint} className={styles.button}>
-          Presale Mint
-        </button>
-      </div>
-    );
-  }
+    if (presaleEnded && !presaleEnded) {
+      return (
+        <div>
+          <span className={styles.description}>
+            Presale has started! if your address has started, you can mint a
+            cryptodev
+          </span>
+          <button onClick={preSaleMint} className={styles.button}>
+            Presale Mint
+          </button>
+        </div>
+      );
+    }
 
-  if (presaleEnded) {
-    return (
-      <div>
-        <span className={styles.description}>
-          Presale has ended, you can mint a Cryptodev in public sale, if any
-          remain
-        </span>
-        <button onClick={publicMint} className={styles.button}>
-          Public Mint
-        </button>
-      </div>
-    );
+    if (presaleEnded) {
+      return (
+        <div>
+          <span className={styles.description}>
+            Presale has ended, you can mint a Cryptodev in public sale, if any
+            remain
+          </span>
+          <button onClick={publicMint} className={styles.button}>
+            Public Mint
+          </button>
+        </div>
+      );
+    }
   }
-}
 
   return (
     <div>
@@ -254,6 +265,9 @@ export default function Home() {
           <h1 className={styles.title}>Welcome to CryptoDevs NFT</h1>
           <span className={styles.description}>
             This is a collection for devs in WEB3
+          </span>
+          <span className={styles.description}>
+            {numTokensMinted}/20 have been minted already
           </span>
           {renderBody()}
         </div>
