@@ -10,6 +10,7 @@ export default function Home() {
   const [presaleStarted, setPresaleStarted] = useState(false);
   const [presaleEnded, setPresaleEnded] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const web3ModalRef = useRef();
 
@@ -134,22 +135,37 @@ export default function Home() {
     }
   }, []);
 
-
-  preSaleMint() = async()=>{
+  const preSaleMint = async () => {
     try {
       const signer = await getProviderOrSigner(true);
 
       const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, signer);
 
-      const txn = await nftContract.preSaleMint({
-        value:utils.parseEther("0.01")
+      const txn = await nftContract.presaleMint({
+        value: utils.parseEther("0.01"),
       });
       await txn.wait();
       window.alert("You successfully minted a cryptodev!");
     } catch (error) {
       console.log(error);
     }
-  }
+  };
+
+  const publicMint = async () => {
+    try {
+      const signer = await getProviderOrSigner(true);
+
+      const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, signer);
+
+      const txn = await nftContract.mint({
+        value: utils.parseEther("0.01"),
+      });
+      await txn.wait();
+      window.alert("You successfully minted a cryptodev!");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   function renderBody() {
     if (!walletConnected) {
@@ -159,6 +175,13 @@ export default function Home() {
         </button>
       );
     }
+
+    if(loading){
+      return (
+        <span className={styles.description}>Loading...</span>
+      );
+    }
+
     if (isOwner && !presaleStarted) {
       return (
         <button onClick={startPresale} className={styles.button}>
@@ -183,7 +206,7 @@ export default function Home() {
     return (
       <div>
         <span className={styles.description}>
-          Presale has started if your address has started, you can mint a
+          Presale has started! if your address has started, you can mint a
           cryptodev
         </span>
         <button onClick={preSaleMint} className={styles.button}>
@@ -197,16 +220,14 @@ export default function Home() {
     return (
       <div>
         <span className={styles.description}>
-          Presale has ended,
-           you can mint a Cryptodev in public sale, if any remain
+          Presale has ended, you can mint a Cryptodev in public sale, if any
+          remain
         </span>
-        <button onClick={preSaleMint} className={styles.button}>
+        <button onClick={publicMint} className={styles.button}>
           Public Mint
         </button>
       </div>
     );
-
-
   }
 
   return (
