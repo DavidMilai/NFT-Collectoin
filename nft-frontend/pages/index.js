@@ -132,28 +132,6 @@ export default function Home() {
     }
   };
 
-  const onPageLoad = async () => {
-    await connectWallet();
-    await getOwner();
-    const presaleStarted = await checkIfPresaleStarted();
-
-    if (presaleStarted) {
-      await checkIfPresaleEnded();
-    }
-    await getNumMintedTokens();
-
-    setInterval(async () => {
-      await getNumMintedTokens();
-    }, 5 * 1000);
-
-    setInterval(async () => {
-      await checkIfPresaleStarted();
-      if (presaleStarted) {
-        await checkIfPresaleEnded();
-      }
-    }, 5 * 1000);
-  };
-
   useEffect(() => {
     if (!walletConnected) {
       web3ModalRef.current = new Web3Modal({
@@ -161,6 +139,30 @@ export default function Home() {
         providerOptions: {},
         disableInjectedProvider: false,
       });
+      
+      const onPageLoad = async () => {
+        await connectWallet();
+        await getOwner();
+        const presaleStarted = await checkIfPresaleStarted();
+    
+        if (presaleStarted) {
+          await checkIfPresaleEnded();
+        }
+        await getNumMintedTokens();
+    
+        setInterval(async () => {
+          await getNumMintedTokens();
+        }, 5 * 1000);
+    
+        setInterval(async () => {
+          await checkIfPresaleStarted();
+          if (presaleStarted) {
+            await checkIfPresaleEnded();
+          }
+        }, 5 * 1000);
+      };
+
+
       onPageLoad();
     }
   }, []);
@@ -278,7 +280,7 @@ export default function Home() {
           </div>
           {renderBody()}
         </div>
-        <Image className={styles.image} src="/cryptodevs/0.svg" width={20} height={50}/>
+        <Image className={styles.image} src="/cryptodevs/0.svg" width={20} height={50} alt = {"nft image"}/>
       </div>
       <footer className={styles.footer}>Made with &#10084; by SuperM</footer>
     </div>
