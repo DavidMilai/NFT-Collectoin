@@ -132,6 +132,28 @@ export default function Home() {
     }
   };
 
+  const onPageLoad = async () => {
+    await connectWallet();
+    await getOwner();
+    const presaleStarted = await checkIfPresaleStarted();
+
+    if (presaleStarted) {
+      await checkIfPresaleEnded();
+    }
+    await getNumMintedTokens();
+
+    setInterval(async () => {
+      await getNumMintedTokens();
+    }, 5 * 1000);
+
+    setInterval(async () => {
+      await checkIfPresaleStarted();
+      if (presaleStarted) {
+        await checkIfPresaleEnded();
+      }
+    }, 5 * 1000);
+  };
+
   useEffect(() => {
     if (!walletConnected) {
       web3ModalRef.current = new Web3Modal({
@@ -139,30 +161,6 @@ export default function Home() {
         providerOptions: {},
         disableInjectedProvider: false,
       });
-      
-      const onPageLoad = async () => {
-        await connectWallet();
-        await getOwner();
-        const presaleStarted = await checkIfPresaleStarted();
-    
-        if (presaleStarted) {
-          await checkIfPresaleEnded();
-        }
-        await getNumMintedTokens();
-    
-        setInterval(async () => {
-          await getNumMintedTokens();
-        }, 5 * 1000);
-    
-        setInterval(async () => {
-          await checkIfPresaleStarted();
-          if (presaleStarted) {
-            await checkIfPresaleEnded();
-          }
-        }, 5 * 1000);
-      };
-
-
       onPageLoad();
     }
   }, []);
