@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Image from "next/image";
 import { providers, Contract, utils } from "ethers";
 import { useEffect, useRef, useState } from "react";
 import Web3Modal from "web3modal";
@@ -277,7 +278,7 @@ export default function Home() {
           </div>
           {renderBody()}
         </div>
-        <img className={styles.image} src="/cryptodevs/0.svg" />
+        <Image className={styles.image} src="/cryptodevs/0.svg" width={20} height={50}/>
       </div>
       <footer className={styles.footer}>Made with &#10084; by SuperM</footer>
     </div>
