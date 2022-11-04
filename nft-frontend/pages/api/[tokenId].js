@@ -2,7 +2,17 @@
 
 export default function handler(req, res) {
   const tokenId = req.query.tokenId;
-  res.status(200),({
-    tokenId:tokenId,
+
+  const name = "Crypto dev #${tokenId}";
+
+  const description = "CryptoDevs is an NFT collection woe Web3 Devs";
+
+  const image = "https://github.com/LearnWeb3DAO/NFT-Collection/blob/main/my-app/public/cryptodevs/${Number(tokenId) - 1}.svg";
+
+
+  return res.json({
+    name: name,
+    description: description,
+    image: image,
   });
 }
